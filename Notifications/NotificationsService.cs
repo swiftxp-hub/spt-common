@@ -1,13 +1,12 @@
 
 using System;
 using EFT.Communications;
+using SwiftXP.SPT.ShowMeTheMoney;
 
 namespace SwiftXP.SPT.Common.Notifications;
 
 public class NotificationsService
 {
-    public static NotificationsService Instance => instance.Value;
-
     private static readonly Lazy<NotificationsService> instance = new(() => new NotificationsService());
 
     private NotificationsService() { }
@@ -24,12 +23,21 @@ public class NotificationsService
 
     public void Send(string message, ENotificationDurationType duration, ENotificationIconType icon)
     {
-        GClass2314 updatedPricesMessage = new GClass2314(
-            message,
-            duration,
-            icon
-        );
+        try
+        {
+            GClass2314 updatedPricesMessage = new(
+                message,
+                duration,
+                icon
+            );
 
-        NotificationManagerClass.DisplayNotification(updatedPricesMessage);
+            NotificationManagerClass.DisplayNotification(updatedPricesMessage);
+        }
+        catch (Exception exception)
+        {
+            Plugin.SimpleSptLogger.LogException(exception);
+        }
     }
+
+    public static NotificationsService Instance => instance.Value;
 }

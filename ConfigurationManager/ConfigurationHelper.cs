@@ -46,4 +46,19 @@ public static class ConfigurationHelper
 
         configFile.Bind(configSection, configEntryName, "", configDescription);
     }
+
+    public static T GetValue<T>(this ConfigEntry<T> configEntry)
+    {
+        return configEntry.Value ?? (T)configEntry.DefaultValue;
+    }
+
+    public static string GetRGBHexCode(this ConfigEntry<Color> configEntry)
+    {
+        return ColorUtility.ToHtmlStringRGB(configEntry.GetValue());
+    }
+
+    public static bool IsEnabled(this ConfigEntry<bool> configEntry)
+    {
+        return configEntry.Value;
+    }
 }
