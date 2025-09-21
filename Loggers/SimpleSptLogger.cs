@@ -6,9 +6,13 @@ namespace SwiftXP.SPT.Common.Loggers;
 
 public class SimpleSptLogger
 {
-    private ManualLogSource logger;
+    private ManualLogSource? logger;
 
-    public SimpleSptLogger(string pluginGuid, string pluginVersion)
+    private static readonly Lazy<SimpleSptLogger> instance = new(() => new SimpleSptLogger());
+
+    private SimpleSptLogger() { }
+
+    public void Init(string pluginGuid, string pluginVersion)
     {
         logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
     }
@@ -40,6 +44,8 @@ public class SimpleSptLogger
 
     public void Log(LogLevel logLevel, object data)
     {
-        logger.Log(logLevel, data);
+        logger?.Log(logLevel, data);
     }
+
+    public static SimpleSptLogger Instance => instance.Value;
 }

@@ -1,7 +1,7 @@
 
 using System;
 using EFT.Communications;
-using SwiftXP.SPT.ShowMeTheMoney;
+using SwiftXP.SPT.Common.Loggers;
 
 namespace SwiftXP.SPT.Common.Notifications;
 
@@ -35,7 +35,7 @@ public class NotificationsService
         }
         catch (Exception exception)
         {
-            Plugin.SimpleSptLogger.LogException(exception);
+            SimpleSptLogger.Instance.LogException(exception);
         }
     }
 
