@@ -16,6 +16,11 @@ public class NotificationsService
         Send(message, ENotificationDurationType.Long, ENotificationIconType.Alert);
     }
 
+    public void SendNotice(string message)
+    {
+        Send(message, ENotificationDurationType.Default, ENotificationIconType.Default);
+    }
+
     public void SendLongNotice(string message)
     {
         Send(message, ENotificationDurationType.Long, ENotificationIconType.Default);
