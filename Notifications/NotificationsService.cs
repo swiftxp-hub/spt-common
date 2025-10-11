@@ -35,7 +35,7 @@ public class NotificationsService
     {
         try
         {
-            GClass2314 updatedPricesMessage = new(
+            GClass2551 updatedPricesMessage = new(
                 message,
                 duration,
                 icon
