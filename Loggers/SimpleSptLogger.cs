@@ -8,13 +8,9 @@ public class SimpleSptLogger
 {
     private ManualLogSource? logger;
 
-    private static readonly Lazy<SimpleSptLogger> instance = new(() => new SimpleSptLogger());
-
-    private SimpleSptLogger() { }
-
-    public void Init(string pluginGuid, string pluginVersion)
+    public SimpleSptLogger(string pluginGuid, string pluginVersion)
     {
-        logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
+        this.logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
     }
 
     public void LogDebug(object data)
@@ -46,6 +42,4 @@ public class SimpleSptLogger
     {
         logger?.Log(logLevel, data);
     }
-
-    public static SimpleSptLogger Instance => instance.Value;
 }
