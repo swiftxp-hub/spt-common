@@ -33,20 +33,13 @@ public class NotificationsService
 
     public void Send(string message, ENotificationDurationType duration, ENotificationIconType icon)
     {
-        try
-        {
-            GClass2314 updatedPricesMessage = new(
-                message,
-                duration,
-                icon
-            );
+        GClass2314 updatedPricesMessage = new(
+            message,
+            duration,
+            icon
+        );
 
-            NotificationManagerClass.DisplayNotification(updatedPricesMessage);
-        }
-        catch (Exception exception)
-        {
-            SimpleSptLogger.Instance.LogException(exception);
-        }
+        NotificationManagerClass.DisplayNotification(updatedPricesMessage);
     }
 
     public static NotificationsService Instance => instance.Value;
