@@ -11,27 +11,27 @@ public class NotificationsService
 
     private NotificationsService() { }
 
-    public void SendAlert(string message)
+    public static void SendAlert(string message)
     {
         Send(message, ENotificationDurationType.Default, ENotificationIconType.Alert);
     }
 
-    public void SendLongAlert(string message)
+    public static void SendLongAlert(string message)
     {
         Send(message, ENotificationDurationType.Long, ENotificationIconType.Alert);
     }
 
-    public void SendNotice(string message)
+    public static void SendNotice(string message)
     {
         Send(message, ENotificationDurationType.Default, ENotificationIconType.Default);
     }
 
-    public void SendLongNotice(string message)
+    public static void SendLongNotice(string message)
     {
         Send(message, ENotificationDurationType.Long, ENotificationIconType.Default);
     }
 
-    public void Send(string message, ENotificationDurationType duration, ENotificationIconType icon)
+    public static void Send(string message, ENotificationDurationType duration, ENotificationIconType icon)
     {
         GClass2551 updatedPricesMessage = new(
             message,

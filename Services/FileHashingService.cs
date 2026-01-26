@@ -26,13 +26,15 @@ public class FileHashingService : IFileHashingService
 
         return result;
     }
-    
+
     private static string GetFileHash(string filePath)
     {
-        using var sha256 = SHA256.Create();
-        using var stream = File.OpenRead(filePath);
+        using SHA256 sha256 = SHA256.Create();
+        using FileStream stream = File.OpenRead(filePath);
         byte[] hashBytes = sha256.ComputeHash(stream);
 
+#pragma warning disable CA1872
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+#pragma warning restore CA1872
     }
 }

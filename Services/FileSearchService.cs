@@ -15,7 +15,7 @@ public class FileSearchService : IFileSearchService
     {
         HashSet<string> searchRoots = ResolvePaths(baseDirectory, pathsToSearch);
 
-        var (excludedFiles, excludedDirectories) = ParseExclusions(baseDirectory, pathsToExclude);
+        (HashSet<string>? excludedFiles, List<string>? excludedDirectories) = ParseExclusions(baseDirectory, pathsToExclude);
 
         foreach (string searchPath in searchRoots)
         {
@@ -51,7 +51,7 @@ public class FileSearchService : IFileSearchService
         {
             string normalizedPath = relativePath.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
             string fullPath = Path.GetFullPath(normalizedPath, baseDirectory);
-            
+
             result.Add(fullPath);
         }
 
@@ -67,8 +67,8 @@ public class FileSearchService : IFileSearchService
         {
             string normalizedPath = path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
             string fullPath = Path.GetFullPath(normalizedPath, baseDirectory);
-            
-            if (Directory.Exists(fullPath)) 
+
+            if (Directory.Exists(fullPath))
             {
                 directories.Add(fullPath);
             }

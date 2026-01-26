@@ -28,7 +28,7 @@ public class BaseDirectoryService : IBaseDirectoryService
             return baseDirectory;
         }
 
-        if (FileExists(baseDirectory, "SPT.Server.exe") || 
+        if (FileExists(baseDirectory, "SPT.Server.exe") ||
             FileExists(baseDirectory, "SPT.Server.Linux"))
         {
             DirectoryInfo directoryInfo = new(baseDirectory);
@@ -41,11 +41,11 @@ public class BaseDirectoryService : IBaseDirectoryService
         }
 
         throw new FileNotFoundException(
-            "Could not resolve base directory. Neither 'EscapeFromTarkov.exe' nor server executables were found.", 
+            "Could not resolve base directory. Neither 'EscapeFromTarkov.exe' nor server executables were found.",
             baseDirectory);
     }
 
-    private bool FileExists(string directory, string filename)
+    private static bool FileExists(string directory, string filename)
     {
         if (!Directory.Exists(directory))
             return false;

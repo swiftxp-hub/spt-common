@@ -5,10 +5,10 @@ namespace SwiftXP.SPT.Common.Services;
 
 public static class WineDetector
 {
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     private static extern IntPtr GetModuleHandle(string lpModuleName);
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true)]
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
     private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
     public static bool IsRunningOnWine()
