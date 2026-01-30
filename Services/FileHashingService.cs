@@ -1,7 +1,8 @@
+using System.IO.Hashing;
+using System.Threading.Tasks;
 using global::System;
 using global::System.Collections.Generic;
 using global::System.IO;
-using global::System.Security.Cryptography;
 using SwiftXP.SPT.Common.Services.Interfaces;
 
 namespace SwiftXP.SPT.Common.Services;
@@ -11,7 +12,9 @@ namespace SwiftXP.SPT.Common.Services;
 #endif
 public class FileHashingService : IFileHashingService
 {
-    public Dictionary<string, string> GetFileHashes(IEnumerable<string> filePathsToHash)
+    private const int BufferSize = 1024 * 1024;
+
+    public async Task<Dictionary<string, string>> GetFileHashes(IEnumerable<string> filePathsToHash)
     {
         Dictionary<string, string> result = new(StringComparer.OrdinalIgnoreCase);
 
@@ -20,19 +23,20 @@ public class FileHashingService : IFileHashingService
             if (!File.Exists(filePath))
                 continue;
 
-            string fileHash = GetFileHash(filePath);
+            string fileHash = await GetXx128FileHash(filePath);
             result.Add(filePath, fileHash);
         }
 
         return result;
     }
 
-    private static string GetFileHash(string filePath)
+    private async static Task<string> GetXx128FileHash(string filePath)
     {
-        using SHA256 sha256 = SHA256.Create();
-        using FileStream stream = File.OpenRead(filePath);
-        byte[] hashBytes = sha256.ComputeHash(stream);
+        XxHash128 xxHash128 = new();
+        using FileStream fileStream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, BufferSize, FileOptions.Asynchronous);
+        await xxHash128.AppendAsync(fileStream);
 
+        byte[] hashBytes = xxHash128.GetCurrentHash();
 #if NET5_0_OR_GREATER
         return Convert.ToHexStringLower(hashBytes);
 #else

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SwiftXP.SPT.Common.Services.Interfaces;
 
 public interface IFileHashingService
 {
-    Dictionary<string, string> GetFileHashes(IEnumerable<string> filePathsToHash);
+    Task<Dictionary<string, string>> GetFileHashes(IEnumerable<string> filePathsToHash);
 }
