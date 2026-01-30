@@ -27,6 +27,11 @@ public class FileSearchService : IFileSearchService
         DirectoryInfo directoryInfo = new(baseDirectory);
         PatternMatchingResult result = matcher.Execute(new DirectoryInfoWrapper(directoryInfo));
 
+        if (!result.HasMatches)
+        {
+            return [];
+        }
+
         return result.Files.Select(file => Path.GetFullPath(Path.Combine(baseDirectory, file.Path)));
     }
 }

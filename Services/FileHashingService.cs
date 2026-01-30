@@ -33,8 +33,10 @@ public class FileHashingService : IFileHashingService
         using FileStream stream = File.OpenRead(filePath);
         byte[] hashBytes = sha256.ComputeHash(stream);
 
-#pragma warning disable CA1872
+#if NET5_0_OR_GREATER
+        return Convert.ToHexStringLower(hashBytes);
+#else
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-#pragma warning restore CA1872
+#endif
     }
 }
