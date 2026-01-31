@@ -23,13 +23,17 @@ public class BaseDirectoryService : IBaseDirectoryService
     {
         string baseDirectory = Path.GetFullPath(AppContext.BaseDirectory);
 
-        if (File.Exists(Path.Combine(baseDirectory, "EscapeFromTarkov.exe")))
+        string? eftPath = Directory.EnumerateFiles(baseDirectory, "EscapeFromTarkov.exe", SearchOption.AllDirectories).FirstOrDefault();
+        if (eftPath != null)
         {
-            return baseDirectory;
+            return Path.GetDirectoryName(eftPath)!;
         }
 
-        if (FileExists(baseDirectory, "SPT.Server.exe") ||
-            FileExists(baseDirectory, "SPT.Server.Linux"))
+        string? serverPath = Directory.EnumerateFiles(baseDirectory, "SPT.Server.exe", SearchOption.AllDirectories).FirstOrDefault();
+        serverPath ??= Directory.EnumerateFiles(baseDirectory, "SPT.Server.Linux", SearchOption.AllDirectories).FirstOrDefault();
+        serverPath ??= Directory.EnumerateFiles(baseDirectory, "SPT.Server.ARM64", SearchOption.AllDirectories).FirstOrDefault();
+
+        if (serverPath != null)
         {
             DirectoryInfo directoryInfo = new(baseDirectory);
             if (directoryInfo.Parent == null)
@@ -43,15 +47,5 @@ public class BaseDirectoryService : IBaseDirectoryService
         throw new FileNotFoundException(
             "Could not resolve base directory. Neither 'EscapeFromTarkov.exe' nor server executables were found.",
             baseDirectory);
-    }
-
-    private static bool FileExists(string directory, string filename)
-    {
-        if (!Directory.Exists(directory))
-            return false;
-
-        return Directory.EnumerateFiles(directory)
-                        .Select(Path.GetFileName)
-                        .Any(x => x != null && x.Equals(filename, StringComparison.OrdinalIgnoreCase));
     }
 }
