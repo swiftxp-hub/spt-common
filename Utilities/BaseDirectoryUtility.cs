@@ -3,23 +3,15 @@ using System.IO;
 using System.Linq;
 using SwiftXP.SPT.Common.Services.Interfaces;
 
-namespace SwiftXP.SPT.Common.Services;
+namespace SwiftXP.SPT.Common.Utilities;
 
-#if NET9_0_OR_GREATER
-[SPTarkov.DI.Annotations.Injectable(SPTarkov.DI.Annotations.InjectionType.Scoped)]
-#endif
-public class BaseDirectoryService : IBaseDirectoryService
+public static class BaseDirectoryUtility
 {
-    private readonly Lazy<string> _cachedBaseDirectory;
+    private static Lazy<string> s_cachedBaseDirectory = new(ResolvePath);
 
-    public BaseDirectoryService()
-    {
-        _cachedBaseDirectory = new Lazy<string>(ResolvePath);
-    }
+    public static string GetEftBaseDirectory() => s_cachedBaseDirectory.Value;
 
-    public string GetEftBaseDirectory() => _cachedBaseDirectory.Value;
-
-    private string ResolvePath()
+    private static string ResolvePath()
     {
         string baseDirectory = Path.GetFullPath(AppContext.BaseDirectory);
 

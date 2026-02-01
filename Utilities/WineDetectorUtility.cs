@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace SwiftXP.SPT.Common.Services;
 
-public static class WineDetector
+public static class WineDetectorUtility
 {
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     private static extern IntPtr GetModuleHandle(string lpModuleName);

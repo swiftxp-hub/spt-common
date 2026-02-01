@@ -7,14 +7,11 @@ using SwiftXP.SPT.Common.Services.Interfaces;
 
 namespace SwiftXP.SPT.Common.Services;
 
-#if NET9_0_OR_GREATER
-[SPTarkov.DI.Annotations.Injectable(SPTarkov.DI.Annotations.InjectionType.Scoped)]
-#endif
-public class FileHashingService : IFileHashingService
+public static class FileHashingService
 {
     private const int BufferSize = 1024 * 1024;
 
-    public async Task<Dictionary<string, string>> GetFileHashes(IEnumerable<string> filePathsToHash)
+    public async static Task<Dictionary<string, string>> GetFileHashes(IEnumerable<string> filePathsToHash)
     {
         Dictionary<string, string> result = new(StringComparer.OrdinalIgnoreCase);
 
