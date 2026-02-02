@@ -4,14 +4,10 @@ using global::System.IO;
 using global::System.Linq;
 using global::Microsoft.Extensions.FileSystemGlobbing;
 using global::Microsoft.Extensions.FileSystemGlobbing.Abstractions;
-using SwiftXP.SPT.Common.Services.Interfaces;
 
 namespace SwiftXP.SPT.Common.Services;
 
-#if NET9_0_OR_GREATER
-[SPTarkov.DI.Annotations.Injectable(SPTarkov.DI.Annotations.InjectionType.Scoped)]
-#endif
-public class FileSearchService : IFileSearchService
+public class FileSearchUtility
 {
     public IEnumerable<string> GetFiles(string baseDirectory, IEnumerable<string> pathsToSearch, IEnumerable<string> pathsToExclude)
     {

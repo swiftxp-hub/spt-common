@@ -5,14 +5,9 @@ using SwiftXP.SPT.Common.Loggers.Interfaces;
 
 namespace SwiftXP.SPT.Common.Loggers;
 
-public class SimpleSptLogger : ISimpleSptLogger
+public class SimpleSptLogger(string pluginGuid, string pluginVersion) : ISimpleSptLogger
 {
-    private ManualLogSource? logger;
-
-    public SimpleSptLogger(string pluginGuid, string pluginVersion)
-    {
-        this.logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
-    }
+    private readonly ManualLogSource? logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
 
     public void LogDebug(object data)
     {

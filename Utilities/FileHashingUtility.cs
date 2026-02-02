@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using global::System;
 using global::System.Collections.Generic;
 using global::System.IO;
-using SwiftXP.SPT.Common.Services.Interfaces;
 
 namespace SwiftXP.SPT.Common.Services;
 
-public static class FileHashingService
+public static class FileHashingUtility
 {
     private const int BufferSize = 1024 * 1024;
 

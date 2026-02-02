@@ -1,16 +1,9 @@
-
-using System;
 using EFT.Communications;
-using SwiftXP.SPT.Common.Loggers;
 
 namespace SwiftXP.SPT.Common.Notifications;
 
-public class NotificationsService
+public static class EftNotificationHelper
 {
-    private static readonly Lazy<NotificationsService> instance = new(() => new NotificationsService());
-
-    private NotificationsService() { }
-
     public static void SendAlert(string message)
     {
         Send(message, ENotificationDurationType.Default, ENotificationIconType.Alert);
@@ -31,7 +24,11 @@ public class NotificationsService
         Send(message, ENotificationDurationType.Long, ENotificationIconType.Default);
     }
 
-    public static void Send(string message, ENotificationDurationType duration, ENotificationIconType icon)
+#pragma warning disable CA1822 // Mark members as static
+
+    private static void Send(string message, ENotificationDurationType duration, ENotificationIconType icon)
+#pragma warning restore CA1822 // Mark members as static
+
     {
         GClass2551 updatedPricesMessage = new(
             message,
@@ -41,6 +38,4 @@ public class NotificationsService
 
         NotificationManagerClass.DisplayNotification(updatedPricesMessage);
     }
-
-    public static NotificationsService Instance => instance.Value;
 }
