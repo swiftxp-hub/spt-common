@@ -1,9 +1,10 @@
 using Comfort.Common;
 using EFT;
+using SPT.Reflection.Utils;
 
 namespace SwiftXP.SPT.Common.EFT;
 
-public static class EFTHelper
+public static class EFTGameExtensions
 {
     public static bool IsInRaid
     {
@@ -14,4 +15,6 @@ public static class EFTHelper
             return inRaid.HasValue && inRaid.Value;
         }
     }
+
+    public static ISession Session => ClientAppUtils.GetMainApp().GetClientBackEndSession();
 }

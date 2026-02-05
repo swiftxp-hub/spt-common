@@ -7,11 +7,11 @@ namespace SwiftXP.SPT.Common.Loggers;
 
 public class SimpleSptLogger : ISimpleSptLogger
 {
-    private ManualLogSource? logger;
+    private ManualLogSource? _logger;
 
     public SimpleSptLogger(string pluginGuid, string pluginVersion)
     {
-        this.logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
+        _logger = Logger.CreateLogSource($"{pluginGuid} (v{pluginVersion})");
     }
 
     public void LogDebug(object data)
@@ -28,7 +28,7 @@ public class SimpleSptLogger : ISimpleSptLogger
     {
         string? firstLineOfStackTrace = exception
             .StackTrace
-            ?.Split(Environment.NewLine)
+            ?.Split(System.Environment.NewLine)
             ?.FirstOrDefault();
 
         LogError($"An unexpected error occured. Message: {exception.Message}. f.l.o.s.t.: {firstLineOfStackTrace}");
@@ -41,6 +41,6 @@ public class SimpleSptLogger : ISimpleSptLogger
 
     public void Log(LogLevel logLevel, object data)
     {
-        logger?.Log(logLevel, data);
+        _logger?.Log(logLevel, data);
     }
 }

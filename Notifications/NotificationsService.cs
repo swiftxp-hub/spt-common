@@ -1,13 +1,12 @@
 
 using System;
 using EFT.Communications;
-using SwiftXP.SPT.Common.Loggers;
 
 namespace SwiftXP.SPT.Common.Notifications;
 
 public class NotificationsService
 {
-    private static readonly Lazy<NotificationsService> instance = new(() => new NotificationsService());
+    private static readonly Lazy<NotificationsService> s_instance = new(() => new NotificationsService());
 
     private NotificationsService() { }
 
@@ -42,5 +41,5 @@ public class NotificationsService
         NotificationManagerClass.DisplayNotification(updatedPricesMessage);
     }
 
-    public static NotificationsService Instance => instance.Value;
+    public static NotificationsService Instance => s_instance.Value;
 }
