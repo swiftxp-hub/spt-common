@@ -51,6 +51,8 @@ public static class FileSystemExtensions
         return fileInfo.Exists ? fileInfo : null;
     }
 
+    public static string GetWebFriendlyPath(this string filePath) => filePath.Replace('\\', '/');
+
     public static bool IsExcludedByPatterns(this string filePath, IEnumerable<string> patterns)
     {
         Matcher matcher = new(StringComparison.OrdinalIgnoreCase);

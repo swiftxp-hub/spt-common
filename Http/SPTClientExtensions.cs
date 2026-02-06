@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine.Networking;
 using SPT.Common.Models;
-using System.Reflection;
 using System.Net.Http;
 using SPT.Common.Http;
 
@@ -14,8 +13,6 @@ namespace SwiftXP.SPT.Common.Http;
 
 public static class SPTClientExtensions
 {
-    private static readonly FieldInfo s_addressField = typeof(SptClient).GetField("address", BindingFlags.Instance | BindingFlags.NonPublic);
-
     public static async Task DownloadWithCancellationAsync(
         this SptClient client,
         string path,
@@ -23,18 +20,18 @@ public static class SPTClientExtensions
         Action<DownloadProgress>? progressCallback = null,
         CancellationToken cancellationToken = default)
     {
-        string? baseAddress = s_addressField?.GetValue(client) as string;
+        Uri baseUri;
+        using (HttpRequestMessage dummyRequest = client.CreateNewHttpRequest(HttpMethod.Get, ""))
+            baseUri = dummyRequest.RequestUri;
 
-        if (string.IsNullOrEmpty(baseAddress))
-            throw new InvalidOperationException("Could not retrieve base address from Client instance via Reflection.");
+        Uri fullUri = new(baseUri, path);
+        string fullUrl = fullUri.AbsoluteUri;
 
         string directoryName = Path.GetDirectoryName(filePath);
-
         if (!string.IsNullOrEmpty(directoryName) && !Directory.Exists(directoryName))
             Directory.CreateDirectory(directoryName);
 
-        using UnityWebRequest request = UnityWebRequest.Get(baseAddress + path);
-
+        using UnityWebRequest request = UnityWebRequest.Get(fullUrl);
         request.downloadHandler = new DownloadHandlerFile(filePath)
         {
             removeFileOnAbort = true
@@ -43,7 +40,6 @@ public static class SPTClientExtensions
         request.certificateHandler = new FakeCertificateHandler();
 
         UnityWebRequestAsyncOperation operation = request.SendWebRequest();
-
         DateTime startTime = DateTime.UtcNow;
         long totalBytes = 0L;
 
