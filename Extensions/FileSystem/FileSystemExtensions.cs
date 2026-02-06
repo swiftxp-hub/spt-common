@@ -29,4 +29,33 @@ public static class FileSystemExtensions
 
         return result.Files.Select(file => new FileInfo(Path.Combine(baseDirectory, file.Path)));
     }
+
+    public static FileInfo? GetFileInfo(this string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+            return null;
+
+        string requestedFullPath;
+
+        try
+        {
+            requestedFullPath = Path.GetFullPath(filePath);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+
+        FileInfo fileInfo = new(requestedFullPath);
+
+        return fileInfo.Exists ? fileInfo : null;
+    }
+
+    public static bool IsExcludedByPatterns(this string filePath, IEnumerable<string> patterns)
+    {
+        Matcher matcher = new(StringComparison.OrdinalIgnoreCase);
+        matcher.AddIncludePatterns(patterns);
+
+        return matcher.Match(filePath).HasMatches;
+    }
 }

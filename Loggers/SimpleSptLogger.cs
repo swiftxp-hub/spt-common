@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using BepInEx.Logging;
-using SwiftXP.SPT.Common.Loggers.Interfaces;
 
 namespace SwiftXP.SPT.Common.Loggers;
 

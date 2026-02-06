@@ -1,7 +1,7 @@
 using System;
 using BepInEx.Logging;
 
-namespace SwiftXP.SPT.Common.Loggers.Interfaces;
+namespace SwiftXP.SPT.Common.Loggers;
 
 public interface ISimpleSptLogger
 {
