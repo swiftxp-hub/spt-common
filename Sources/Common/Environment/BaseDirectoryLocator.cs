@@ -9,10 +9,14 @@ namespace SwiftXP.SPT.Common.Environment;
 #endif
 public class BaseDirectoryLocator : IBaseDirectoryLocator
 {
+    private readonly string _startPath;
     private readonly Lazy<string> _cachedBaseDirectory;
 
-    public BaseDirectoryLocator()
+    public BaseDirectoryLocator() : this(AppContext.BaseDirectory) { }
+
+    public BaseDirectoryLocator(string startPath)
     {
+        _startPath = startPath;
         _cachedBaseDirectory = new Lazy<string>(ResolvePath);
     }
 
@@ -20,7 +24,7 @@ public class BaseDirectoryLocator : IBaseDirectoryLocator
 
     private string ResolvePath()
     {
-        string startDirectory = Path.GetFullPath(AppContext.BaseDirectory);
+        string startDirectory = Path.GetFullPath(_startPath);
 
         DirectoryInfo? current = new(startDirectory);
 

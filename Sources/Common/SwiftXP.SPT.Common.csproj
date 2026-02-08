@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+
+    <AssemblyName>SwiftXP.SPT.Common</AssemblyName>
+    <Product>SPT Common</Product>
+    <RootNamespace>SwiftXP.SPT.Common</RootNamespace>
+    <OutputType>Library</OutputType>
+
+    <RestoreAdditionalProjectSources>
+      https://api.nuget.org/v3/index.json;
+      https://nuget.bepinex.dev/v3/index.json
+    </RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LicenseToolPath>$(HOME)/.dotnet/tools/dotnet-project-licenses</LicenseToolPath>
+    <LicenseToolPath Condition="'$(OS)' == 'Windows_NT'">
+      $(UserProfile)\.dotnet\tools\dotnet-project-licenses.exe</LicenseToolPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Core" Version="5.*" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.43" IncludeAssets="compile" />
+
+    <PackageReference Include="SPTarkov.Common" Version="4.0.12" />
+    <PackageReference Include="SPTarkov.DI" Version="4.0.12" />
+    <PackageReference Include="SPTarkov.Server.Core" Version="4.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/**/*.dll" /> -->
+
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/0Harmony.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/Assembly-CSharp.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/BepInEx.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/Comfort.dll" />
+    <Reference
+      Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/ItemComponent.Types.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/Newtonsoft.Json.dll" />
+    <Reference
+      Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/Sirenix.Serialization.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/spt-common.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/spt-reflection.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/Unity.TextMeshPro.dll" />
+    <Reference
+      Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/UnityEngine.CoreModule.dll" />
+    <Reference
+      Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/UnityEngine.IMGUIModule.dll" />
+    <Reference Include="$(MSBuildThisFileDirectory)/../../../spt4-shared-dlls/UnityEngine.UI.dll" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2"
+      PrivateAssets="all" />
+  </ItemGroup>
+  
+</Project>

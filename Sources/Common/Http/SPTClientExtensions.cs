@@ -20,14 +20,17 @@ public static class SPTClientExtensions
         Action<DownloadProgress>? progressCallback = null,
         CancellationToken cancellationToken = default)
     {
-        Uri baseUri;
+        Uri? baseUri;
         using (HttpRequestMessage dummyRequest = client.CreateNewHttpRequest(HttpMethod.Get, ""))
             baseUri = dummyRequest.RequestUri;
+
+        if (baseUri is null)
+            throw new HttpRequestException("Unable to retrieve base URI.");
 
         Uri fullUri = new(baseUri, path);
         string fullUrl = fullUri.AbsoluteUri;
 
-        string directoryName = Path.GetDirectoryName(filePath);
+        string? directoryName = Path.GetDirectoryName(filePath);
         if (!string.IsNullOrEmpty(directoryName) && !Directory.Exists(directoryName))
             Directory.CreateDirectory(directoryName);
 
