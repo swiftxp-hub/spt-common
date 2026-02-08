@@ -14,7 +14,7 @@ public class BaseDirectoryLocator : IBaseDirectoryLocator
 
     public BaseDirectoryLocator() : this(AppContext.BaseDirectory) { }
 
-    public BaseDirectoryLocator(string startPath)
+    internal BaseDirectoryLocator(string startPath)
     {
         _startPath = startPath;
         _cachedBaseDirectory = new Lazy<string>(ResolvePath);
