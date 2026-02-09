@@ -1,27 +1,26 @@
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine.Networking;
-using SPT.Common.Models;
-using System.Net.Http;
 using SPT.Common.Http;
-
-using SptClient = SPT.Common.Http.Client;
+using SPT.Common.Models;
+using UnityEngine.Networking;
 
 namespace SwiftXP.SPT.Common.Http;
 
-public static class SPTClientExtensions
+public class SPTHttpClient : ISPTHttpClient
 {
-    public static async Task DownloadWithCancellationAsync(
-        this SptClient client,
+    public HttpClient HttpClient => RequestHandler.HttpClient.HttpClient;
+
+    public async Task DownloadWithCancellationAsync(
         string path,
         string filePath,
         Action<DownloadProgress>? progressCallback = null,
         CancellationToken cancellationToken = default)
     {
         Uri? baseUri;
-        using (HttpRequestMessage dummyRequest = client.CreateNewHttpRequest(HttpMethod.Get, ""))
+        using (HttpRequestMessage dummyRequest = RequestHandler.HttpClient.CreateNewHttpRequest(HttpMethod.Get, ""))
             baseUri = dummyRequest.RequestUri;
 
         if (baseUri is null)
