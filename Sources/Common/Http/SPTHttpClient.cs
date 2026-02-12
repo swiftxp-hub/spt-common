@@ -45,49 +45,39 @@ public class SPTHttpClient : ISPTHttpClient
         DateTime startTime = DateTime.UtcNow;
         long totalBytes = 0L;
 
-        try
+        while (!operation.isDone)
         {
-            while (!operation.isDone)
+            if (cancellationToken.IsCancellationRequested)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    request.Abort();
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
-
-                DateTime utcNow = DateTime.UtcNow;
-                long downloadedBytes = (long)request.downloadedBytes;
-
-                if (totalBytes == 0L && request.GetResponseHeader("Content-Length") != null &&
-                    long.TryParse(request.GetResponseHeader("Content-Length"), out long result))
-                {
-                    totalBytes = result;
-                }
-
-                double totalSeconds = (utcNow - startTime).TotalSeconds;
-                double bytesPerSecond = (totalSeconds > 0.0) ? (downloadedBytes / totalSeconds) : 0.0;
-
-                progressCallback?.Invoke(new DownloadProgress
-                {
-                    DownloadSpeed = DownloadProgress.FormatDownloadSpeed(bytesPerSecond),
-                    FileSizeInfo = DownloadProgress.FormatFileSize(downloadedBytes) + " / " + DownloadProgress.FormatFileSize(totalBytes)
-                });
-
-                await Task.Delay(25, cancellationToken);
+                request.Abort();
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
+            DateTime utcNow = DateTime.UtcNow;
+            long downloadedBytes = (long)request.downloadedBytes;
+
+            if (totalBytes == 0L && request.GetResponseHeader("Content-Length") != null &&
+                long.TryParse(request.GetResponseHeader("Content-Length"), out long result))
             {
-                throw new HttpRequestException($"Download failed: {request.error}");
+                totalBytes = result;
             }
+
+            double totalSeconds = (utcNow - startTime).TotalSeconds;
+            double bytesPerSecond = (totalSeconds > 0.0) ? (downloadedBytes / totalSeconds) : 0.0;
+
+            progressCallback?.Invoke(new DownloadProgress
+            {
+                DownloadSpeed = DownloadProgress.FormatDownloadSpeed(bytesPerSecond),
+                FileSizeInfo = DownloadProgress.FormatFileSize(downloadedBytes) + " / " + DownloadProgress.FormatFileSize(totalBytes)
+            });
+
+            await Task.Delay(25, cancellationToken);
         }
-        catch (OperationCanceledException)
-        {
-            if (File.Exists(filePath))
-                File.Delete(filePath);
 
-            throw;
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            throw new HttpRequestException($"Download failed: {request.error}");
         }
     }
 }
